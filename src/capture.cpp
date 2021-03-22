@@ -1,10 +1,14 @@
 #include "capture.h"
 
+#include <iostream>
 #include <fstream>
 #include <functional>
+#include <memory>
+#include <math.h>
 
+#include "network_packet.h"
+#include "json.h"
 
-using namespace Tins;
 
 Capture::Capture(const std::string& filename)
 {
@@ -15,27 +19,32 @@ Capture::Capture(const std::string& filename)
     std::string file_path = "../out/" + filename + ".pcap";
 #endif
 
-    p_writer = std::make_unique<PacketWriter>(file_path,DataLinkType<EthernetII>());
+    p_writer = std::make_unique<Tins::PacketWriter>(
+            file_path,
+            Tins::DataLinkType<Tins::EthernetII>()
+            );
 
 };
 
-bool Capture::callback(const PDU& pdu)
+bool Capture::callback(Tins::PDU& pdu)
 {
-    //store the PDU in a Packet object for writing it to a PCAP file
-    //Packet packet = pdu;
-    Packet packet(pdu);
+    //make a network packet
+    NetworkPacket np(pdu);
 
-    //get IP, UDP and RAW payload data
-    //const IP& ip = pdu.rfind_pdu<IP>();
-    //const UDP& udp = pdu.rfind_pdu<UDP>();
-    //const RawPDU& raw = udp.rfind_pdu<RawPDU>();
+    //generate JSON object from network packet
+    JSON j(np);
+
+    std::cout << j << "\n";
+
+    // store packets in pcap file as well to view in wireshark
+    Tins::Packet packet(pdu);
 
     p_writer->write(packet);
-    
+
     return true;
 }
 
-void Capture::run_sniffer(Sniffer& sniffer)
+void Capture::run_sniffer(Tins::Sniffer& sniffer)
 {
     sniffer.sniff_loop(std::bind(
                 &Capture::callback,

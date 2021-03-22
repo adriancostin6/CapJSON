@@ -14,7 +14,7 @@ class Capture{
     private:
         std::unique_ptr<Tins::PacketWriter> p_writer;
 
-        bool callback(const Tins::PDU& pdu);
+        bool callback(Tins::PDU& pdu);
 };
 
 #endif
