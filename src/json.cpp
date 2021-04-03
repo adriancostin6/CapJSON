@@ -1,26 +1,25 @@
 #include "json.h"
 
-#include "rapidjson/prettywriter.h"
+#include "rapidjson/writer.h"
 
 #include "network_packet.h"
 
-#define RAPIDJSON_HAS_STDSTRING 1
 
 using rapidjson::StringBuffer;
 //make it pretty
-using rapidjson::PrettyWriter;
+using rapidjson::Writer;
 
 //utility functions
-void BuildJSON(NetworkPacket& np, PrettyWriter<StringBuffer>& writer);
-void AddObject_DataLink(NetworkPacket& np, PrettyWriter<StringBuffer>& writer);
-void AddObject_Network(NetworkPacket& np, PrettyWriter<StringBuffer>& writer, bool ipv4);
-void AddObject_Transport(NetworkPacket& np, PrettyWriter<StringBuffer>& writer, bool tcp);
+void BuildJSON(NetworkPacket& np, Writer<StringBuffer>& writer);
+void AddObject_DataLink(NetworkPacket& np, Writer<StringBuffer>& writer);
+void AddObject_Network(NetworkPacket& np, Writer<StringBuffer>& writer, bool ipv4);
+void AddObject_Transport(NetworkPacket& np, Writer<StringBuffer>& writer, bool tcp);
 
 
 JSON::JSON(NetworkPacket& np)
 {
     StringBuffer sb;
-    PrettyWriter<StringBuffer> writer(sb);
+    Writer<StringBuffer> writer(sb);
 
     BuildJSON(np, writer);
 
@@ -34,9 +33,9 @@ std::ostream& operator<<(std::ostream& out, const JSON& j)
     return out ;
 }
 
-void BuildJSON(NetworkPacket& np, PrettyWriter<StringBuffer>& writer)
+void BuildJSON(NetworkPacket& np, Writer<StringBuffer>& writer)
 {
-    writer.StartArray();
+    writer.StartObject();
 
     AddObject_DataLink(np, writer);
 
@@ -52,10 +51,10 @@ void BuildJSON(NetworkPacket& np, PrettyWriter<StringBuffer>& writer)
     if(np.udp_)
         AddObject_Transport(np, writer, false);
 
-    writer.EndArray();
+    writer.EndObject();
 }
 
-void AddObject_DataLink(NetworkPacket& np, PrettyWriter<StringBuffer>& writer)
+void AddObject_DataLink(NetworkPacket& np, Writer<StringBuffer>& writer)
 {
     writer.Key("eth");
     writer.StartObject();
@@ -78,7 +77,7 @@ void AddObject_DataLink(NetworkPacket& np, PrettyWriter<StringBuffer>& writer)
     writer.EndObject();
 }
 
-void AddObject_Network( NetworkPacket& np, PrettyWriter<StringBuffer>& writer, bool ipv4)
+void AddObject_Network( NetworkPacket& np, Writer<StringBuffer>& writer, bool ipv4)
 {
     if(ipv4) {
         //maybe we need to account for ipv6
@@ -155,7 +154,7 @@ void AddObject_Network( NetworkPacket& np, PrettyWriter<StringBuffer>& writer, b
     writer.EndObject();
 }
 
-void AddObject_Transport(NetworkPacket& np, PrettyWriter<StringBuffer>& writer, bool tcp)
+void AddObject_Transport(NetworkPacket& np, Writer<StringBuffer>& writer, bool tcp)
 {
     if(tcp) {
         writer.Key("tcp");
