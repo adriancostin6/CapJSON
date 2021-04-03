@@ -11,7 +11,7 @@ int main()
     std::cout<< "Network interface: "<< iface.name()
         <<" IP ADDR: "<< info.ip_addr<< "\n";
 
-    Capture c("packet");
+    CapJSON::Capture c("packet");
 
     //sniffer configuration
     Tins::SnifferConfiguration config;

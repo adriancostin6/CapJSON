@@ -1,7 +1,10 @@
-#ifndef NETWORK_PACKET_H
-#define NETWORK_PACKET_H
+#ifndef CAPJSON_NETWORK_PACKET_H
+#define CAPJSON_NETWORK_PACKET_H
 
 #include <tins/tins.h>
+
+namespace CapJSON
+{
 
 struct NetworkPacket
 {
@@ -14,4 +17,6 @@ struct NetworkPacket
     Tins::TCP* tcp_;
     Tins::RawPDU* raw_;
 };
-#endif // NETWORK_PACKET_H
+
+}
+#endif // CAPJSON_NETWORK_PACKET_H

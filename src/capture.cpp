@@ -9,6 +9,8 @@
 #include "network_packet.h"
 #include "json.h"
 
+namespace CapJSON
+{
 
 Capture::Capture(const std::string& filename)
 {
@@ -52,4 +54,6 @@ void Capture::run_sniffer(Tins::Sniffer& sniffer)
                 std::placeholders::_1
                 )
             );
+}
+
 }

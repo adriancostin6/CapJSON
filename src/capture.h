@@ -1,10 +1,13 @@
-#ifndef CAPTURE_H
-#define CAPTURE_H
+#ifndef CAPJSON_CAPTURE_H
+#define CAPJSON_CAPTURE_H
+
 #include <memory>
 #include <string>
 
 #include <tins/tins.h>
 
+namespace CapJSON
+{
 
 class Capture{
     public:
@@ -17,4 +20,5 @@ class Capture{
         bool callback(Tins::PDU& pdu);
 };
 
-#endif
+}
+#endif //CAPJSON_CAPTURE_H

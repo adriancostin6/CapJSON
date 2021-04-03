@@ -1,7 +1,11 @@
-#ifndef JSON_H
-#define JSON_H
+#ifndef CAPJSON_JSON_H
+#define CAPJSON_JSON_H
 
 #include <ostream>
+
+
+namespace CapJSON
+{
 
 class NetworkPacket;
 
@@ -14,4 +18,6 @@ class JSON
   private:
     std::string json_;
 };
-#endif // JSON_H
+
+}
+#endif // CAPJSON_JSON_H

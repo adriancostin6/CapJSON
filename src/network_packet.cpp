@@ -1,5 +1,8 @@
 #include "network_packet.h"
 
+namespace CapJSON
+{
+
 NetworkPacket::NetworkPacket(Tins::PDU& pdu) :
     eth_(pdu.find_pdu<Tins::EthernetII>()),
     ip_(pdu.find_pdu<Tins::IP>()),
@@ -8,3 +11,5 @@ NetworkPacket::NetworkPacket(Tins::PDU& pdu) :
     udp_(pdu.find_pdu<Tins::UDP>()),
     raw_(pdu.find_pdu<Tins::RawPDU>())
 {}
+
+}

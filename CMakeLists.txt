@@ -14,6 +14,8 @@ add_executable(${PROJECT_NAME}
     src/network_packet.cpp
     src/json.h
     src/json.cpp
+    src/utility.h
+    src/utility.cpp
 )
 
 set(RAPIDJSON_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/external/rapidjson/include)
