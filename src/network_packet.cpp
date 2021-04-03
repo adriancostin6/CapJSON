@@ -3,7 +3,8 @@
 namespace CapJSON
 {
 
-NetworkPacket::NetworkPacket(Tins::PDU& pdu) :
+NetworkPacket::NetworkPacket(Tins::PDU& pdu, const Tins::Timestamp& ts) :
+    ts_(ts),
     eth_(pdu.find_pdu<Tins::EthernetII>()),
     ip_(pdu.find_pdu<Tins::IP>()),
     ipv6_(pdu.find_pdu<Tins::IPv6>()),

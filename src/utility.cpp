@@ -9,6 +9,13 @@ void BuildJSON(NetworkPacket& np, Writer<StringBuffer>& writer)
 {
     writer.StartObject();
 
+    AddTimestamp(np, writer);
+
+    //when adding layers
+    // begin object
+    //code goes here 
+    // end object
+
     AddObject_DataLink(np, writer);
 
     if(np.ip_)
@@ -172,6 +179,27 @@ void AddObject_Transport(NetworkPacket& np, Writer<StringBuffer>& writer, bool t
     writer.Uint(np.udp_->checksum());
 
     writer.EndObject();
+}
+
+void AddTimestamp(NetworkPacket& np, Writer<StringBuffer>& writer)
+{
+    writer.Key("timestamp");
+    
+    // get microsecond timestamp and convert it to ms
+    std::chrono::microseconds us = np.ts_;
+    us /= 1000  ;
+
+    // cast timestamp to c_str and pass it to rapidjson write function
+    std::string mili = std::to_string(us.count());
+    writer.String(mili.c_str());
+}
+
+void AddObject_Layers(NetworkPacket& np, Writer<StringBuffer>& writer)
+{
+}
+
+void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
+{
 }
 
 }

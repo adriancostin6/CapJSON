@@ -8,8 +8,9 @@ namespace CapJSON
 
 struct NetworkPacket
 {
-    NetworkPacket(Tins::PDU& pdu);
+    NetworkPacket(Tins::PDU& pdu, const Tins::Timestamp& ts);
 
+    const Tins::Timestamp ts_;
     Tins::EthernetII* eth_;
     Tins::IP* ip_;
     Tins::IPv6* ipv6_;

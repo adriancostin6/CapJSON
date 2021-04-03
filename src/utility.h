@@ -19,7 +19,7 @@ void AddObject_Transport(NetworkPacket& np, Writer<StringBuffer>& writer, bool t
 
 //to implement 
 void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer);
-void AddObject_Timestamp(NetworkPacket& np, Writer<StringBuffer>& writer);
+void AddTimestamp(NetworkPacket& np, Writer<StringBuffer>& writer);
 void AddObject_Layers(NetworkPacket& np, Writer<StringBuffer>& writer);
 
 }

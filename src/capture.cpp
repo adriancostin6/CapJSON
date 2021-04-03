@@ -30,16 +30,19 @@ Capture::Capture(const std::string& filename)
 
 bool Capture::callback(Tins::PDU& pdu)
 {
-    //make a network packet
-    NetworkPacket np(pdu);
+    // used to write output to pcap file to view in wireshark
+    // and to extract the timestamp for the captured packet
+    Tins::Packet packet(pdu);
+    const Tins::Timestamp& ts = packet.timestamp();
+
+    // extract pdu and timestamp into a separate network packet structure
+    NetworkPacket np(pdu, ts);
 
     //generate JSON object from network packet
     JSON j(np);
 
     std::cout << j << "\n";
 
-    // store packets in pcap file as well to view in wireshark
-    Tins::Packet packet(pdu);
 
     p_writer->write(packet);
 
