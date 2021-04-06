@@ -14,9 +14,14 @@ JSON::JSON(NetworkPacket& np)
 
     BuildJSON(np, writer);
 
-    //set the output string
     json_ = sb.GetString();
 }
+
+//test if copy constructor gets called
+//JSON::JSON(const JSON& other) : json_(other.json_)
+//{
+//    std::cout << "Copy constructor called\n" ; 
+//}
 
 std::ostream& operator<<(std::ostream& out, const JSON& j)
 {
