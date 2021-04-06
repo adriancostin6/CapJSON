@@ -11,6 +11,9 @@ void BuildJSON(NetworkPacket& np, Writer<StringBuffer>& writer)
 
     AddTimestamp(np, writer);
 
+    writer.Key("layers");
+    writer.StartObject();
+
     //when adding layers
     // begin object
     //code goes here 
@@ -28,6 +31,10 @@ void BuildJSON(NetworkPacket& np, Writer<StringBuffer>& writer)
     if(np.udp_)
         AddObject_Transport(np, writer, false);
 
+    //layers
+    writer.EndObject();
+
+    //timestamp
     writer.EndObject();
 }
 
