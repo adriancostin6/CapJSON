@@ -6,18 +6,29 @@
 
 #include <tins/tins.h>
 
+#include "json.h"
+
 namespace CapJSON
 {
 
-class Capture{
+class PacketCapture
+{
     public:
-        Capture(const std::string& filename);
-        void run_sniffer(Tins::Sniffer& sniffer);
+        PacketCapture();
+        void RunSniffer(Tins::Sniffer& sniffer);
 
     private:
+        bool Callback(Tins::PDU& pdu);
+        void WriteToFile();
+        void SetInitialTimestamp(const Tins::Timestamp& ts);
+
+        std::vector<JSON> json_objects_;
+        Tins::Timestamp initial_timestamp_;
+        uint8_t packet_count_;
+        const int max_packets_ = 99;
+
         std::unique_ptr<Tins::PacketWriter> p_writer;
 
-        bool callback(Tins::PDU& pdu);
 };
 
 }
