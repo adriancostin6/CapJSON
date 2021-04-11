@@ -24,8 +24,13 @@ class PacketCapture
 
         std::vector<JSON> json_objects_;
         Tins::Timestamp initial_timestamp_;
-        uint8_t packet_count_;
+
+        // ensures 100 packets per output file
+        uint8_t output_count_;
         const int max_packets_ = 99;
+
+        // counter for the number of packets
+        uint32_t packet_count_;
 
         std::unique_ptr<Tins::PacketWriter> p_writer;
 
