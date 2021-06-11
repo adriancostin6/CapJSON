@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
 
-    if (argc < 2) {
+    if (argc < 2 || argc > 3) {
         std::cout << "Usage: # ./cap-json output_file_path [options]\n"
             << "  options:\n"
             << "    pcap    Generate pcap output files in the out directory\n"
@@ -17,16 +17,15 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    std::string dir_path;
+    std::string dir_path(argv[1]);
     bool gen_pcap = false;
 
     if(argc == 3) {
-        dir_path += argv[1];
-        std::string pcap_parameter = argv[2];
+        std::string pcap_parameter(argv[2]);
         if (pcap_parameter.compare("pcap") == 0)
             gen_pcap = true;
     }
-
+    
     Tins::NetworkInterface iface = 
         Tins::NetworkInterface::default_interface();
     Tins::NetworkInterface::Info info = iface.addresses();
