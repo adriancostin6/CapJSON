@@ -14,7 +14,7 @@ namespace CapJSON
 class PacketCapture
 {
     public:
-        PacketCapture();
+        PacketCapture(const std::string& path, bool gen_pcap);
         void RunSniffer(Tins::Sniffer& sniffer);
 
     private:
@@ -31,6 +31,10 @@ class PacketCapture
 
         // counter for the number of packets
         uint32_t packet_count_;
+
+        // parameters for generating the output files
+        std::string output_path_;
+        bool gen_pcap_;
 
         std::unique_ptr<Tins::PacketWriter> p_writer;
 
