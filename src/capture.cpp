@@ -68,6 +68,9 @@ bool PacketCapture::Callback(Tins::PDU& pdu)
     // used to write output to pcap file to view in wireshark
     // and to extract the timestamp for the captured packet
     Tins::Packet packet(pdu);
+    //so we don't accidentally skip packets
+    p_writer->write(packet);
+
     const Tins::Timestamp& ts = packet.timestamp();
 
     // store an initial timestamp that will be appended to the 
@@ -81,9 +84,6 @@ bool PacketCapture::Callback(Tins::PDU& pdu)
 
     //create JSON object and store it in vector
     json_objects_.emplace_back(np);
-
-    //so we don't accidentally skip packets
-    p_writer->write(packet);
 
     // write packets to file(resets output counter) and skip to the next callback
     if (output_count_ == max_packets_) {
