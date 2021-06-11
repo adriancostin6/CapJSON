@@ -13,10 +13,11 @@
 namespace CapJSON
 {
 
-PacketCapture::PacketCapture() :
-    packet_count_(1), output_count_(0)
+PacketCapture::PacketCapture(const std::string& path, bool gen_pcap) :
+    packet_count_(1), output_count_(0), output_path_(path), gen_pcap_(gen_pcap)
 {
     //create a pcap file to store the packets
+    if (gen_pcap_) {
 #ifdef _WIN32
     std::string file_path = "../../out/outfile.pcap";
 #else
@@ -27,6 +28,7 @@ PacketCapture::PacketCapture() :
             file_path,
             Tins::DataLinkType<Tins::EthernetII>()
             );
+     } 
 
     json_objects_.reserve(100);
 
@@ -37,16 +39,11 @@ void PacketCapture::WriteToFile()
     std::chrono::microseconds us = initial_timestamp_;
     us /= 1000;
     std::cout << "100 packets reached, init timestamp is: " << std::to_string(us.count()) << "\n";
-    //write packets to output files
 
-    //temporary, have to find a better way to do this
-#ifdef _WIN32
-    std::string path = "../../out/packet-" + std::to_string(us.count());
-#else
-    std::string path = "../out/packet-" + std::to_string(us.count());
-#endif
+    // make output file path
+    std::string of_path = output_path_ + "/packet-" + std::to_string(us.count());
 
-    std::ofstream ofs(path);
+    std::ofstream ofs(of_path);
 
     for(JSON j: json_objects_)
         ofs << j << "\n";
@@ -68,8 +65,10 @@ bool PacketCapture::Callback(Tins::PDU& pdu)
     // used to write output to pcap file to view in wireshark
     // and to extract the timestamp for the captured packet
     Tins::Packet packet(pdu);
+
     //so we don't accidentally skip packets
-    p_writer->write(packet);
+    if(gen_pcap_)
+        p_writer->write(packet);
 
     const Tins::Timestamp& ts = packet.timestamp();
 
