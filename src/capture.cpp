@@ -41,7 +41,7 @@ void PacketCapture::WriteToFile()
     std::cout << "100 packets reached, init timestamp is: " << std::to_string(us.count()) << "\n";
 
     // make output file path
-    std::string of_path = output_path_ + "/packet-" + std::to_string(us.count());
+    std::string of_path = output_path_ + "/packets-" + std::to_string(us.count());
 
     std::ofstream ofs(of_path);
 
