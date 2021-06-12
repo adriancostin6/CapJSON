@@ -18,11 +18,6 @@ void BuildJSON(NetworkPacket& np, Writer<StringBuffer>& writer)
 
     AddObject_FrameMetadata(np, writer);
 
-    //when adding layers
-    // begin object
-    //code goes here 
-    // end object
-
     AddObject_DataLink(np, writer);
     AddObject_Network(np, writer);
     AddObject_Transport(np, writer);
@@ -55,7 +50,7 @@ void AddObject_DataLink(NetworkPacket& np, Writer<StringBuffer>& writer)
 //    writer.Key("eth_eth_trailer_size");
 //    writer.Uint(np.eth_->trailer_size());
 
-    //writer.EndObject();
+    writer.EndObject();
 }
 
 void AddObject_Network(NetworkPacket& np, Writer<StringBuffer>& writer)
@@ -104,11 +99,11 @@ void AddObject_Network(NetworkPacket& np, Writer<StringBuffer>& writer)
         writer.Key("ip_ip_dst");
         writer.String(np.ip_->dst_addr().to_string().c_str());
 
-        //options here
+        //TODO: options
 
-        //padding?
+        //TODO: padding?
 
-        //writer.EndObject();
+        writer.EndObject();
     }
 
     if(np.ipv6_) {
@@ -133,9 +128,9 @@ void AddObject_Network(NetworkPacket& np, Writer<StringBuffer>& writer)
         writer.Key("ipv6_ipv6_dst");
         writer.String(np.ipv6_->dst_addr().to_string().c_str());
 
-        //extensions ??
+        //TODO: extensions ??
 
-        //writer.EndObject();
+        writer.EndObject();
     }
 }
 
@@ -188,9 +183,7 @@ void AddObject_Transport(NetworkPacket& np, Writer<StringBuffer>& writer)
         writer.Key("tcp_tcp_urgent_pointer");
         writer.Uint(np.tcp_->urg_ptr());
 
-        //options
-
-        //writer.EndObject();
+        //TODO: options
     }
 
     if(np.udp_) {
@@ -401,9 +394,9 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                     writer.Key("icmp_icmp_checksum");
                     writer.Uint(np.icmp_->checksum());
 
-                    //data here 
+                    //TODO: data here 
 
-
+                    //icmp
                     writer.EndObject();
                     return;
                 }
@@ -445,8 +438,9 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                     writer.Key("icmpv6_icmpv6_checksum");
                     writer.Uint(np.icmpv6_->checksum());
 
-                    //data here
+                    //TODO: data here
 
+                    //icmpv6
                     writer.EndObject();
                     return;
                 }
@@ -493,6 +487,9 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                 writer.Key("tcp_tcp_payload");
                 writer.String(hex_payload.c_str());
 
+                //tcp
+                writer.EndObject();
+
                 if(np.dns_) {
 
                     writer.Key("dns");
@@ -529,6 +526,7 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                     writer.Key("dns_dns_additcount");
                     writer.Uint(np.dns_->additional_count());
 
+                    //dns
                     writer.EndObject();
                 }
 
@@ -557,6 +555,9 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                 writer.Key("udp_udp_payload");
                 writer.String(hex_payload.c_str());
 
+                //udp
+                writer.EndObject();
+
                 if(np.dns_) {
                     writer.Key("dns");
                     writer.StartObject();
@@ -592,6 +593,7 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                     writer.Key("dns_dns_additcount");
                     writer.Uint(np.dns_->additional_count());
 
+                    //dns
                     writer.EndObject();
                 }
                 else if(np.dhcp_) {
@@ -599,7 +601,6 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                     writer.StartObject();
 
                     //figure out the type of message 
-
                     switch(np.dhcp_->type()) {
                         case 1:
                             std::cout << "discover message\n";
@@ -627,6 +628,7 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                             break;
                         }
 
+                        //dhcp
                         writer.EndObject();
                 }
                 else if(np.dhcpv6_) {
@@ -687,6 +689,7 @@ void AddObject_Payload(NetworkPacket& np, Writer<StringBuffer>& writer)
                             break;
                         }
 
+                    //dhcpv6
                     writer.EndObject();
                 }
             }
